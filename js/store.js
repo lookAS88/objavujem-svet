@@ -74,29 +74,66 @@ const Store = {
   web: location.protocol === 'https:',
   serverOK: false,
   _pushTimer: null,
+  _seen: 0,          // savedAt postupu, ktorý toto okno naposledy načítalo alebo uložilo
+  _lastJson: '',     // postup v tej podobe, ako bol naposledy načítaný/uložený (uloženie bez zmeny sa preskočí)
+  onExternal: null,  // zavolá sa, keď sa načíta novší postup z iného okna
 
+  /* vráti true, ak sa prevzal uložený postup */
   load() {
+    let took = false;
     try {
       const raw = localStorage.getItem(STORAGE_KEY) || legacyRaw();
       const saved = raw ? JSON.parse(raw) : null;
-      if (isCurrentEpoch(saved)) this.state = deepMerge(freshState(), saved);
+      if (isCurrentEpoch(saved)) { this.state = deepMerge(freshState(), saved); took = true; }
     } catch (e) {
       console.warn('Nepodarilo sa načítať postup', e);
     }
     if (!this.state) this.state = freshState();
+    this._seen = this.state.savedAt || 0;
+    this._lastJson = JSON.stringify(this.state);
+    return took;
   },
 
   _writeLocal() {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state));
+      this.state.wAt = this.state.savedAt;   // podpis tejto verzie – staršia verzia aplikácie ho pri ukladaní neobnoví
+      const json = JSON.stringify(this.state);
+      localStorage.setItem(STORAGE_KEY, json);
       this.storageOK = true;
+      this._seen = this.state.savedAt || 0;
+      this._lastJson = json;
     } catch (e) {
       this.storageOK = false;
       console.warn('Nepodarilo sa uložiť postup', e);
     }
   },
 
-  save() {
+  /* Uložil medzitým postup iné okno? (napr. karta v Chrome, ktorá ostala otvorená vedľa nainštalovanej aplikácie)
+     Porovnáva sa s tým, čo toto okno naposledy videlo – nie „novší vyhráva“, lebo staré okno by si samo dalo nový čas. */
+  changedElsewhere() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const o = raw ? JSON.parse(raw) : null;
+      if (!isCurrentEpoch(o)) return false;          // cudzí/starý formát sa nenačíta – ten sa smie prepísať
+      const at = o.savedAt || 0;
+      if (at === 0 || at === (this._seen || 0)) return false;
+      // zapísalo okno so staršou verziou aplikácie (napr. karta otvorená pred aktualizáciou) – jej kópia môže byť stará:
+      // neprevziať ju a pri ďalšom uložení zapísať vlastný postup (ako to robila staršia verzia)
+      if (o.wAt !== at) { this._lastJson = ''; return false; }
+      return true;
+    } catch (e) { return false; }
+  },
+  /* načíta novší postup z iného okna; vráti true, ak sa naozaj prevzal */
+  refreshIfChanged() {
+    if (!this.changedElsewhere() || !this.load()) return false;
+    if (this.onExternal) setTimeout(() => this.onExternal(), 0);
+    return true;
+  },
+
+  /* force: prepísať aj postup z iného okna (import zálohy, vymazanie postupu) */
+  save(force) {
+    if (!force && this.refreshIfChanged()) return;   // staré okno neprepíše novší postup
+    if (!force && JSON.stringify(this.state) === this._lastJson) return;   // nič sa nezmenilo → nezapisovať (inak by iné okná zbytočne zastarali)
     this.state.savedAt = Date.now();
     this._writeLocal();
     if (this.server) {
@@ -145,7 +182,7 @@ const Store = {
   replace(obj) {
     this.state = deepMerge(freshState(), obj);
     this.state.epoch = DATA_EPOCH;
-    this.save();
+    this.save(true);
   },
 
   reset() {
@@ -154,7 +191,7 @@ const Store = {
     this.state = freshState();
     this.state.settings = keepSettings;
     Object.assign(this.state.profile, keep);
-    this.save();
+    this.save(true);
   },
 
   /* ---------- lekcie ---------- */

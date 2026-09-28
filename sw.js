@@ -3,7 +3,7 @@
    Pri prvom otvorení sa uloží celá aplikácia aj bežné fotky (~11 MB). Veľké fotky na zväčšenie
    (img/foto/velke) sa uložia až vtedy, keď si ich dieťa otvorí.
    Nová verzia sa stiahne celá na pozadí (pri zmene CACHE nižšie) a použije sa pri ďalšom spustení. */
-const CACHE = 'objavujem-svet-v1';        // pri každej novej verzii aplikácie zvýšiť
+const CACHE = 'objavujem-svet-v2';        // pri každej novej verzii aplikácie zvýšiť
 const VELKE = 'objavujem-svet-velke-v1';  // veľké fotky – zvýšiť len keď sa zmenia
 const PREFIX = 'objavujem-svet-';         // mažeme len svoje kópie (na github.io môžu byť aj iné aplikácie toho istého účtu)
 const CORE = [
@@ -32,9 +32,16 @@ self.addEventListener('install', (e) => {
     const cache = await caches.open(CACHE);
     await cache.addAll(CORE.map((f) => new Request(f, { cache: 'reload' })));
     const rest = [...FLAGS, ...(await photoList(cache))];
+    // keď sa súbor nepodarí stiahnuť (slabá Wi-Fi), použije sa kópia z predošlej verzie – offline potom nič nechýba
+    const get = async (f) => {
+      try {
+        const r = await fetch(new Request(f, { cache: 'reload' }));
+        if (r.ok) return await cache.put(f, r);
+      } catch (err) { /* bez siete */ }
+      try { const old = await caches.match(f); if (old) await cache.put(f, old); } catch (err) { /* nevadí */ }
+    };
     for (let i = 0; i < rest.length; i += 8) {   // po kúskoch; jedna chýbajúca fotka nezastaví celú inštaláciu
-      await Promise.all(rest.slice(i, i + 8).map((f) => fetch(new Request(f, { cache: 'reload' }))
-        .then((r) => (r.ok ? cache.put(f, r) : null)).catch(() => null)));
+      await Promise.all(rest.slice(i, i + 8).map(get));
     }
     await self.skipWaiting();
   })());

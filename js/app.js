@@ -309,7 +309,7 @@ function runActivity(L, idx) {
   const gameEl = $('.game'), wrap = $('.game-wrap'), bar = $('.pbar > div');
   const timers = [];
   const missed = new Set();
-  const st = Store.state.stats;
+  const st = () => Store.state.stats;   // vždy aktuálny postup (po načítaní z iného okna je Store.state nový objekt)
   let finished = false;
   const stop = () => { timers.forEach(f => { try { f(); } catch (e) { /* nič */ } }); timers.length = 0; };
 
@@ -318,14 +318,14 @@ function runActivity(L, idx) {
     el: gameEl,
     say: (t) => (Store.state.settings.readQ && t ? Speech.say(t) : Promise.resolve()),
     correct(key, first = true) {
-      st.correct++;
+      st().correct++;
       if (key) {
         if (first && !missed.has(key)) Store.markKnown(key);
         Store.srsHit(key, true, first && !missed.has(key));
       }
     },
     wrong(key) {
-      st.wrong++;
+      st().wrong++;
       if (key) { missed.add(key); Store.srsHit(key, false); }
     },
     praise() {
@@ -1109,12 +1109,38 @@ async function init() {
   document.addEventListener('pointerdown', () => Sfx.ac(), { once: true });
   window.addEventListener('hashchange', () => App.route());
   window.addEventListener('pagehide', () => { Store.save(); Store.flushServer(); });
+  // iné okno (karta v prehliadači / nainštalovaná aplikácia) mohlo medzitým uložiť novší postup → prevziať ho
+  let staleUI = false;
+  const freshTop = () => { Topbar.shown = null; Topbar.render(); };   // aj pokladnička hneď s novou sumou (bez animácie)
+  const refreshUI = () => { staleUI = false; Modal.close(); freshTop(); App.route(); toast('🔄 Načítal sa najnovší postup'); };
+  Store.onExternal = () => {
+    if (document.hidden) {
+      // okno v pozadí: postup je už nový, len sa zastaví rozohraná hra (nech nehovorí a nehrá);
+      // obrazovka sa obnoví, keď sa dieťa do okna vráti
+      staleUI = true;
+      try { App.cleanup(); } catch (e) { /* nič */ }
+      App.cleanup = () => {};
+    } else if (!staleUI && /^#\/play\//.test(location.hash)) {   // hru zastavenú v pozadí treba spustiť znova (nižšie)
+      freshTop();          // rozohraná hra pokračuje už s novým postupom (výsledok sa zapíše doň), ďalšia obrazovka sa vykreslí z neho
+    } else if (!document.hasFocus()) {
+      staleUI = true;      // okno vedľa: prekresliť až po návrate, aby nezastavilo reč v druhom okne
+    } else refreshUI();
+  };
+  const onBack = () => { if (!Store.refreshIfChanged() && staleUI) refreshUI(); };
+  window.addEventListener('storage', e => { if (e.key === STORAGE_KEY) Store.refreshIfChanged(); });   // hneď, aj keď je okno v pozadí
+  window.addEventListener('focus', onBack);
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') onBack(); });
+  window.addEventListener('pageshow', e => { if (e.persisted) onBack(); });
 
   App.route();
   if (!Store.state.welcomed) showWelcome();
 
   // offline režim a inštalácia na tablet – len z webu (https), lokálna verzia so serverom ho nepotrebuje
   if (Store.web && 'serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+  // uložená kópia nech ostane, aj keď tabletu dochádza miesto – len v nainštalovanej aplikácii (Chrome to povolí sám, bez otázky)
+  if (Store.web && navigator.storage && navigator.storage.persist && matchMedia('(display-mode: standalone), (display-mode: fullscreen)').matches) {
+    navigator.storage.persisted().then(p => p || navigator.storage.persist()).catch(() => {});
+  }
 }
 
 init();
