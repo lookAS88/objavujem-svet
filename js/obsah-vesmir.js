@@ -1,0 +1,206 @@
+/* ==========================================================================
+   Oblasť: VESMÍR
+   ========================================================================== */
+addLessons('space', [
+  /* ------------------------------------------------------------------ */
+  {
+    id: 'sp-planets', title: 'Planéty', sub: 'Slnečná sústava', icon: 'planet:saturn', board: 'solar',
+    badge: { e: 'planet:saturn', name: 'Planétková princezná', desc: 'Poznáš planéty Slnečnej sústavy' },
+    items: [
+      { n: 'Slnko', p: 'planet:sun', id: 'sun', f: 'Slnko je hviezda – obrovská žeravá guľa. Dáva nám svetlo a teplo.' },
+      { n: 'Merkúr', p: 'planet:mercury', id: 'mercury', f: 'Najmenšia planéta a najbližšie k Slnku.' },
+      { n: 'Venuša', p: 'planet:venus', id: 'venus', f: 'Najhorúcejšia planéta. Na oblohe svieti ako jasná hviezdička – Zornička.' },
+      { n: 'Zem', p: 'planet:earth', id: 'earth', f: 'Naša planéta. Jediná, o ktorej vieme, že je na nej život – má vodu a vzduch.' },
+      { n: 'Mars', p: 'planet:mars', id: 'mars', f: 'Červená planéta. Jazdia po nej robotické vozidlá.' },
+      { n: 'Jupiter', p: 'planet:jupiter', id: 'jupiter', f: 'Najväčšia planéta. Má obrovskú búrku – Veľkú červenú škvrnu.' },
+      { n: 'Saturn', p: 'planet:saturn', id: 'saturn', f: 'Planéta s nádhernými prstencami z ľadu a kamienkov.' },
+      { n: 'Urán', p: 'planet:uranus', id: 'uranus', f: 'Ľadový obor, ktorý sa okolo Slnka kotúľa akoby na boku.' },
+      { n: 'Neptún', p: 'planet:neptune', id: 'neptune', f: 'Najvzdialenejšia planéta – modrá a veterná.' },
+    ],
+    order: [
+      { q: 'Zoraď planéty od Slnka (prvé štyri)', seq: [{ n: 'Merkúr', p: 'planet:mercury' }, { n: 'Venuša', p: 'planet:venus' }, { n: 'Zem', p: 'planet:earth' }, { n: 'Mars', p: 'planet:mars' }] },
+      { q: 'Zoraď veľké planéty od Slnka', seq: [{ n: 'Jupiter', p: 'planet:jupiter' }, { n: 'Saturn', p: 'planet:saturn' }, { n: 'Urán', p: 'planet:uranus' }, { n: 'Neptún', p: 'planet:neptune' }] },
+      { q: 'Zoraď všetky planéty od Slnka', seq: [{ n: 'Merkúr', p: 'planet:mercury' }, { n: 'Venuša', p: 'planet:venus' }, { n: 'Zem', p: 'planet:earth' }, { n: 'Mars', p: 'planet:mars' }, { n: 'Jupiter', p: 'planet:jupiter' }, { n: 'Saturn', p: 'planet:saturn' }, { n: 'Urán', p: 'planet:uranus' }, { n: 'Neptún', p: 'planet:neptune' }] },
+    ],
+    quiz: [
+      { q: 'Ktorá planéta je najväčšia?', a: 'Jupiter', o: ['Zem', 'Mars', 'Merkúr'] },
+      { q: 'Na ktorej planéte žijeme?', a: 'na Zemi', o: ['na Marse', 'na Venuši', 'na Jupiteri'] },
+      { q: 'Ktorá planéta má najkrajšie prstence?', a: 'Saturn', o: ['Zem', 'Mars', 'Venuša'] },
+      { q: 'Koľko planét má Slnečná sústava?', a: '8', o: ['5', '10', '12'] },
+      { q: 'Ktorá planéta je červená?', a: 'Mars', o: ['Neptún', 'Urán', 'Venuša'] },
+      { q: 'Čo je Slnko?', a: 'hviezda', o: ['planéta', 'mesiac', 'kométa'] },
+      { q: 'Ktorá planéta je najbližšie k Slnku?', a: 'Merkúr', o: ['Zem', 'Neptún', 'Saturn'] },
+      { q: 'Koľkátá je Zem od Slnka?', a: 'tretia', o: ['prvá', 'piata', 'ôsma'] },
+      { q: 'Ktorá planéta je Slnku najďalej?', a: 'Neptún', o: ['Mars', 'Jupiter', 'Merkúr'] },
+    ],
+    tf: [
+      { s: 'Slnko je planéta.', ok: false, f: 'Slnko je hviezda. Planéty okolo neho obiehajú.' },
+      { s: 'Zem je tretia planéta od Slnka.', ok: true },
+      { s: 'Pluto je planéta.', ok: false, f: 'Pluto je trpasličia planéta – je príliš malé.' },
+      { s: 'Na Marse žijú ľudia.', ok: false, f: 'Na Marse zatiaľ žiadni ľudia nie sú – jazdia tam len roboty.' },
+      { s: 'Jupiter je väčší ako Zem.', ok: true, f: 'Do Jupitera by sa zmestilo vyše tisíc Zemí!' },
+      { s: 'Saturn má prstence.', ok: true },
+    ],
+    acts: [
+      { type: 'learn' },
+      { type: 'find', rounds: 6, opts: 4 },
+      { type: 'map', rounds: 6, ask: 'Ťukni na: {n}' },
+      { type: 'order', rounds: 2 },
+      { type: 'quiz', rounds: 6 },
+      { type: 'memory', pairs: 5 },
+      { type: 'tf', rounds: 6 },
+    ],
+  },
+
+  /* ------------------------------------------------------------------ */
+  {
+    id: 'sp-moon', title: 'Zem a Mesiac', sub: 'deň, noc a fázy Mesiaca', icon: '🌗',
+    badge: { e: '🌙', name: 'Mesačná víla', desc: 'Vieš, prečo je deň a noc' },
+    items: [
+      { n: 'Zemeguľa', p: 'planet:earth', f: 'Zem je guľatá ako lopta. Okolo nej je vzduch – atmosféra.' },
+      { n: 'deň a noc', p: 'row:☀️|🌙', f: 'Zem sa otáča okolo seba – raz za deň. Na strane k Slnku je deň, na druhej noc.' },
+      { n: 'rok', p: 'row:planet:earth|planet:sun', f: 'Zem obehne okolo Slnka za jeden rok – za 365 dní.' },
+      { n: 'Mesiac', p: 'pair:planet:earth|planet:moon', f: 'Mesiac obieha okolo Zeme. Sám nesvieti – odráža svetlo Slnka.' },
+      { n: 'spln', p: 'foto:spln', f: 'Keď je Mesiac celý okrúhly, hovoríme mu spln.' },
+      { n: 'nov', p: 'foto:nov', f: 'Keď Mesiac nie je vôbec vidieť, je nov.' },
+      { n: 'prvá štvrť', p: 'foto:prva-stvrt', f: 'Mesiac pribúda – každú noc je ho viac.' },
+      { n: 'posledná štvrť', p: 'foto:posledna-stvrt', f: 'Mesiac ubúda – každú noc je ho menej.' },
+      { n: 'severný pól', p: '🧊', f: 'Najsevernejšie miesto na Zemi. Je tam ľad a žijú tam ľadové medvede.' },
+      { n: 'rovník', p: '🌴', f: 'Pomyselná čiara okolo stredu Zeme. Je tam stále horúco.' },
+    ],
+    order: [
+      { q: 'Zoraď, ako sa mení Mesiac', seq: [{ n: 'nov', p: 'foto:nov' }, { n: 'prvá štvrť', p: 'foto:prva-stvrt' }, { n: 'spln', p: 'foto:spln' }, { n: 'posledná štvrť', p: 'foto:posledna-stvrt' }] },
+      { q: 'Zoraď časti dňa', seq: [{ n: 'ráno', p: '🌅' }, { n: 'poludnie', p: '☀️' }, { n: 'večer', p: '🌇' }, { n: 'noc', p: '🌙' }] },
+    ],
+    quiz: [
+      { q: 'Za aký čas sa Zem otočí okolo seba?', a: 'za jeden deň', o: ['za jeden rok', 'za jednu hodinu', 'za týždeň'] },
+      { q: 'Za aký čas obehne Zem okolo Slnka?', a: 'za jeden rok', o: ['za jeden deň', 'za mesiac', 'za minútu'] },
+      { q: 'Prečo je v noci tma?', a: 'naša strana Zeme je odvrátená od Slnka', o: ['Slnko zhasne', 'Mesiac zakryje Slnko', 'Slnko ide spať'] },
+      { q: 'Svieti Mesiac sám?', a: 'nie, odráža svetlo Slnka', o: ['áno, má v sebe lampu', 'áno, horí ako oheň'] },
+      { q: 'Ako voláme celý okrúhly Mesiac?', a: 'spln', o: ['nov', 'štvrť', 'polmesiac'] },
+      { q: 'Aký tvar má Zem?', a: 'guľa', o: ['placka', 'kocka', 'trojuholník'] },
+      { q: 'Okolo čoho obieha Mesiac?', a: 'okolo Zeme', o: ['okolo Marsu', 'okolo Jupitera', 'nehýbe sa'] },
+      { q: 'Kde je na Zemi najteplejšie?', a: 'pri rovníku', o: ['na severnom póle', 'na južnom póle', 'na vrchole hory'] },
+      { q: 'Koľko dní má rok?', a: '365', o: ['100', '30', '1000'] },
+    ],
+    tf: [
+      { s: 'Zem sa točí.', ok: true, f: 'Zem sa otáča okolo seba, preto sa strieda deň a noc.' },
+      { s: 'Mesiac svieti vlastným svetlom.', ok: false, f: 'Mesiac odráža svetlo Slnka – ako zrkadlo.' },
+      { s: 'Zem je guľatá.', ok: true },
+      { s: 'Keď je u nás deň, na druhej strane Zeme je noc.', ok: true },
+      { s: 'Slnko obieha okolo Zeme.', ok: false, f: 'Je to naopak – Zem obieha okolo Slnka.' },
+      { s: 'Na Mesiaci je vzduch ako na Zemi.', ok: false, f: 'Na Mesiaci vzduch nie je. Astronauti tam musia mať skafander.' },
+    ],
+    acts: [
+      { type: 'learn' },
+      { type: 'quiz', rounds: 6 },
+      { type: 'order', rounds: 2 },
+      { type: 'memory', pairs: 4 },
+      { type: 'tf', rounds: 6 },
+    ],
+  },
+
+  /* ------------------------------------------------------------------ */
+  {
+    id: 'sp-stars', title: 'Hviezdy', sub: 'súhvezdia a kométy', icon: '✨',
+    badge: { e: '🌠', name: 'Hviezdička', desc: 'Poznáš hviezdy a súhvezdia' },
+    items: [
+      { n: 'hviezda', p: '⭐', f: 'Obrovská žiariaca guľa ako Slnko, len veľmi, veľmi ďaleko.' },
+      { n: 'Veľký voz', p: 'svg:bigdipper', f: 'Sedem jasných hviezd, ktoré vyzerajú ako voz. Je to časť súhvezdia Veľká medvedica.' },
+      { n: 'Polárka', p: 'foto:polarka', f: 'Hviezda, ktorá ukazuje na sever. Kedysi podľa nej hľadali cestu námorníci.' },
+      { n: 'súhvezdie', p: '✨', f: 'Skupina hviezd, ktorú si ľudia spojili do obrázka – napríklad Veľký voz alebo Kasiopeja.' },
+      { n: 'Mliečna dráha', p: 'foto:mliecna-draha', f: 'Naša galaxia – obrovský ostrov z miliárd hviezd. Patrí do nej aj Slnko.' },
+      { n: 'kométa', p: 'foto:kometa', f: 'Ľadová hrudka, ktorej pri Slnku narastie dlhý svietiaci chvost.' },
+      { n: 'padajúca hviezda', p: '🌠', f: 'Nie je to hviezda, ale kamienok z vesmíru, ktorý zhorí vo vzduchu. Môžeš si niečo priať!' },
+      { n: 'ďalekohľad', p: 'foto:dalekohlad', f: 'Pomocou ďalekohľadu pozorujeme hviezdy a planéty. Vedec, ktorý ich skúma, je astronóm.' },
+    ],
+    dots: [
+      { name: 'Veľký voz', icon: '🐻', stars: true, pts: [[90, 22], [76, 18], [63, 26], [48, 38], [16, 30], [19, 60], [47, 64]], close: 3,
+        f: 'Hurá! Toto je Veľký voz. Nájdeš ho na oblohe každú jasnú noc.' },
+      { name: 'Kasiopeja', icon: '👑', stars: true, pts: [[10, 38], [30, 64], [50, 46], [70, 66], [90, 34]],
+        f: 'Súhvezdie Kasiopeja vyzerá ako písmeno W. Kasiopeja bola kráľovná z gréckej báje.' },
+      { name: 'Hviezdička', icon: '⭐', pts: [[50, 8], [61, 38], [93, 38], [67, 57], [77, 88], [50, 69], [23, 88], [33, 57], [7, 38], [39, 38]], close: 0,
+        f: 'Nakreslila si hviezdu! ⭐' },
+    ],
+    quiz: [
+      { q: 'Ktorá hviezda je nám najbližšie?', a: 'Slnko', o: ['Polárka', 'Mesiac', 'Mars'] },
+      { q: 'Koľko hviezd tvorí Veľký voz?', a: '7', o: ['3', '12', '100'] },
+      { q: 'Ktorá hviezda ukazuje na sever?', a: 'Polárka', o: ['Slnko', 'Zornička', 'Kométa'] },
+      { q: 'Čím pozorujeme hviezdy?', a: 'ďalekohľadom', o: ['lupou na čítanie', 'mikroskopom', 'slnečnými okuliarmi'] },
+      { q: 'Čo je padajúca hviezda?', a: 'kamienok, ktorý zhorí vo vzduchu', o: ['hviezda, ktorá spadla na zem', 'lietadlo', 'vták'] },
+      { q: 'Ako sa volá naša galaxia?', a: 'Mliečna dráha', o: ['Čokoládová cesta', 'Veľký voz', 'Slnečná sústava'] },
+      { q: 'Ako sa volá vedec, ktorý skúma hviezdy?', a: 'astronóm', o: ['lekár', 'kuchár', 'hasič'] },
+      { q: 'Čo má kométa?', a: 'dlhý svietiaci chvost', o: ['krídla', 'prstence ako Saturn', 'kolesá'] },
+    ],
+    tf: [
+      { s: 'Slnko je hviezda.', ok: true },
+      { s: 'Hviezdy sú malé svetielka kúsok nad mrakmi.', ok: false, f: 'Hviezdy sú obrovské slnká – len veľmi, veľmi ďaleko.' },
+      { s: 'Veľký voz je súčasť Veľkej medvedice.', ok: true },
+      { s: 'Cez deň nevidno hviezdy, lebo ich prežiari Slnko.', ok: true },
+      { s: 'Kométa je lietajúce auto.', ok: false, f: 'Kométa je ľadová hrudka s chvostom.' },
+    ],
+    acts: [
+      { type: 'learn' },
+      { type: 'dots', rounds: 3 },
+      { type: 'quiz', rounds: 6 },
+      { type: 'memory', pairs: 5 },
+      { type: 'tf', rounds: 5 },
+    ],
+  },
+
+  /* ------------------------------------------------------------------ */
+  {
+    id: 'sp-astro', title: 'Astronauti', sub: 'rakety a lety do vesmíru', icon: '👩‍🚀',
+    badge: { e: '🚀', name: 'Malá astronautka', desc: 'Vieš, kto letel do vesmíru' },
+    items: [
+      { n: 'raketa', p: 'foto:raketa', f: 'Veľmi silný stroj, ktorý vynesie ľudí a družice do vesmíru.' },
+      { n: 'astronaut', p: 'foto:astronaut', f: 'Človek, ktorý letí do vesmíru. V skafandri má vzduch na dýchanie.' },
+      { n: 'skafander', p: 'foto:skafander', f: 'Špeciálny oblek, ktorý chráni astronauta. Vo vesmíre nie je vzduch.' },
+      { n: 'psík Lajka', p: 'row:foto:lajka|txt:1957', f: 'Prvé zviera, ktoré obletelo Zem – v roku 1957.' },
+      { n: 'Jurij Gagarin', p: 'row:foto:gagarin|txt:1961', f: 'Prvý človek vo vesmíre – v roku 1961.' },
+      { n: 'Neil Armstrong', p: 'row:foto:armstrong|txt:1969', f: 'Prvý človek, ktorý kráčal po Mesiaci – v roku 1969.' },
+      { n: 'Ivan Bella', p: 'row:foto:ivan-bella|txt:1999', f: 'Prvý Slovák vo vesmíre – v roku 1999.' },
+      { n: 'vesmírna stanica', p: 'foto:iss', f: 'Veľký dom vo vesmíre. Astronauti v ňom žijú a robia pokusy.' },
+      { n: 'beztiaž', p: 'foto:beztiaz', f: 'Vo vesmírnej stanici všetko pláva – aj astronauti a kvapky vody!' },
+    ],
+    order: [
+      { q: 'Zoraď od najstaršieho letu', seq: [{ n: 'psík Lajka 1957', p: 'foto:lajka' }, { n: 'Gagarin 1961', p: 'foto:gagarin' }, { n: 'Armstrong na Mesiaci 1969', p: 'foto:armstrong' }, { n: 'Ivan Bella 1999', p: 'foto:ivan-bella' }] },
+      { q: 'Odpočítavanie štartu! Zoraď od 5', seq: [{ n: '5' }, { n: '4' }, { n: '3' }, { n: '2' }, { n: '1' }, { n: 'štart!', p: '🚀' }] },
+    ],
+    quiz: [
+      { q: 'Kto bol prvý človek vo vesmíre?', a: 'Jurij Gagarin', o: ['Neil Armstrong', 'Ivan Bella', 'Kolumbus'] },
+      { q: 'Kto prvý kráčal po Mesiaci?', a: 'Neil Armstrong', o: ['Jurij Gagarin', 'psík Lajka', 'Ivan Bella'] },
+      { q: 'Ako sa volá prvý Slovák vo vesmíre?', a: 'Ivan Bella', o: ['Jurij Gagarin', 'Janko Hraško', 'Milan Rastislav Štefánik'] },
+      { q: 'Prečo nosí astronaut skafander?', a: 'vo vesmíre nie je vzduch', o: ['aby bol pekný', 'lebo prší', 'aby vedel lietať'] },
+      { q: 'Ktoré zviera ako prvé obletelo Zem?', a: 'psík Lajka', o: ['mačka Micka', 'opica Čita', 'kôň Ferko'] },
+      { q: 'Čo robia veci vo vesmírnej stanici?', a: 'plávajú vo vzduchu', o: ['padajú na zem', 'horia', 'zamrznú'] },
+      { q: 'Čím letia astronauti do vesmíru?', a: 'raketou', o: ['balónom', 'vlakom', 'lietadlom'] },
+    ],
+    tf: [
+      { s: 'Gagarin bol prvý človek vo vesmíre.', ok: true },
+      { s: 'Ivan Bella je prvý Slovák vo vesmíre.', ok: true },
+      { s: 'Na Mesiaci sa dá dýchať bez skafandra.', ok: false, f: 'Na Mesiaci nie je vzduch.' },
+      { s: 'Vo vesmírnej stanici všetko pláva.', ok: true },
+      { s: 'Do vesmíru sa dá dostať na bicykli.', ok: false, f: 'Do vesmíru nás vynesie iba raketa.' },
+    ],
+    acts: [
+      { type: 'learn' },
+      { type: 'quiz', rounds: 6 },
+      { type: 'order', rounds: 2 },
+      { type: 'match', pairs: 4, a: 'n', b: 'p', only: 'row', title: 'Kto kedy letel?' },
+      { type: 'tf', rounds: 5 },
+    ],
+  },
+
+  /* ------------------------------------------------------------------ */
+  {
+    id: 'sp-review', review: true, title: 'Let do vesmíru', sub: 'opakovanie vesmíru', icon: '🏆',
+    badge: { e: '🪐', name: 'Kráľovná vesmíru', desc: 'Zvládla si celý vesmír!' },
+    acts: [
+      { type: 'bigquiz', rounds: 10 },
+      { type: 'order', rounds: 3, src: 'area' },
+      { type: 'memory', pairs: 6, src: 'area' },
+      { type: 'mix', rounds: 8, src: 'area' },
+    ],
+  },
+]);

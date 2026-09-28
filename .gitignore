@@ -1,0 +1,9 @@
+# postup dieťaťa a denné zálohy (ukladá ich lokálny server) – na web nikdy nepatria
+data/
+*-zaloha-*.json
+# nástroje na vývoj
+.claude/
+Odoslat na GitHub.cmd
+*.log
+Thumbs.db
+desktop.ini

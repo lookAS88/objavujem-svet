@@ -1,0 +1,16 @@
+{
+  "name": "Objavujem svet",
+  "short_name": "Objavujem svet",
+  "description": "Hravé učenie pre zvedavých druhákov: zemepis, príroda, vesmír, telo, počty a slovenčina so skutočnými fotkami a odmenami do pokladničky.",
+  "lang": "sk",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "fullscreen",
+  "background_color": "#f6f1ff",
+  "theme_color": "#f6f1ff",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
